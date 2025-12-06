@@ -1,404 +1,410 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Schriftliche Division – Gitter</title>
-  <style>
-    :root {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI";
-      background: #f3f4f6;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .app {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      padding: 2rem 2.5rem;
-      max-width: 520px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    h1 {
-      margin-top: 0;
-      text-align: center;
-      font-size: 1.4rem;
-    }
-    .subtitle {
-      text-align: center;
-      color: #4b5563;
-      margin-bottom: 0.6rem;
-      font-size: 0.9rem;
-    }
-
-    .task-line {
-      text-align: center;
-      font-size: 1.4rem;
-      font-weight: 600;
-      margin-bottom: 0.6rem;
-    }
-    .quot-input {
-      width: 2.0rem;
-      height: 2.0rem;
-      border-radius: 8px;
-      border: 2px solid #d1d5db;
-      font-size: 1.1rem;
-      text-align: center;
-      background: #f9fafb;
-      cursor: pointer;
-      margin-left: 0.1rem;
-    }
-    .quot-input.correct {
-      border-color: #16a34a;
-      background: #dcfce7;
-    }
-    .quot-input.incorrect {
-      border-color: #b91c1c;
-      background: #fee2e2;
-    }
-
-    /* Gitter wie kariertes Papier, 3 Spalten für H, Z, E */
-    .grid-wrapper {
-      display: inline-block;
-      margin: 0 auto 0.8rem auto;
-      border: 1px solid #e5e7eb;
-      padding: 0.15rem;
-      background: #f9fafb;
-    }
-    .calc-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 2.3rem);
-      grid-auto-rows: 2.1rem;
-      gap: 0;
-    }
-    .grid-cell {
-      border: 1px solid #e5e7eb; /* kariertes Papier */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .work-input {
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: transparent;
-      text-align: center;
-      font-size: 1.05rem;
-      cursor: pointer;
-    }
-    .work-input:focus {
-      outline: none;
-    }
-
-    .buttons-row {
-      margin-top: 0.6rem;
-      display: flex;
-      gap: 0.6rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .btn {
-      padding: 0.5rem 1.2rem;
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #e5e7eb;
-      border-color: #9ca3af;
-    }
-
-    .feedback {
-      text-align: center;
-      margin-top: 0.5rem;
-      min-height: 1.2rem;
-      font-weight: 500;
-      font-size: 0.95rem;
-    }
-    .feedback.ok { color: #15803d; }
-    .feedback.error { color: #b91c1c; }
-
-    /* Popup */
-    .popup-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,23,42,0.35);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .popup {
-      background: #ffffff;
-      border-radius: 14px;
-      padding: 0.8rem 1rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      max-width: 260px;
-      width: 100%;
-    }
-    .popup-title {
-      text-align: center;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      font-size: 0.95rem;
-    }
-    .digit-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0,1fr));
-      gap: 0.3rem;
-      margin-bottom: 0.4rem;
-    }
-    .digit-btn {
-      padding: 0.3rem 0;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
-      font-size: 1.05rem;
-      cursor: pointer;
-    }
-    .digit-btn:hover { background: #e5e7eb; }
-    .popup-footer {
-      text-align: center;
-    }
-    .popup-close {
-      padding: 0.25rem 0.8rem;
-      border-radius: 999px;
-      border: none;
-      background: #e5e7eb;
-      cursor: pointer;
-      font-size: 0.85rem;
-    }
-    .popup-close:hover { background: #d1d5db; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schriftliche Division - Matheaufgabe</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f9ff;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #4a6fa5;
+            padding-bottom: 15px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        
+        .description {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #4a6fa5;
+        }
+        
+        .task-container {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .division-problem {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+        
+        .division-symbol {
+            font-size: 2rem;
+            vertical-align: middle;
+            margin: 0 10px;
+        }
+        
+        .division-steps {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #eee;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        
+        .step {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted #eee;
+        }
+        
+        .step:last-child {
+            border-bottom: none;
+        }
+        
+        .calculation-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .result {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #3a5a80;
+        }
+        
+        .new-problem {
+            background-color: #2ecc71;
+        }
+        
+        .new-problem:hover {
+            background-color: #27ae60;
+        }
+        
+        .show-steps {
+            background-color: #e67e22;
+        }
+        
+        .show-steps:hover {
+            background-color: #d35400;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="app">
-  <h1>Schriftliche Division</h1>
-  <div class="subtitle">Bis 1.000 – einstelliger Divisor, ohne Rest</div>
-
-  <!-- Aufgabenzeile -->
-  <div class="task-line" id="task-line">
-    <!-- Wird per JS gefüllt, z.B.: 432 : 3 = [ ][ ][ ] -->
-  </div>
-
-  <!-- Gitter für die Rechenschritte, 3 Spalten (H, Z, E) × 6 Zeilen -->
-  <div class="grid-wrapper">
-    <div class="calc-grid">
-      <!-- 6 Zeilen × 3 Spalten, alles Eingabefelder -->
-      <!-- Zeile 1 -->
-      <div class="grid-cell"><input class="work-input" data-row="0" data-col="0" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="0" data-col="1" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="0" data-col="2" readonly></div>
-      <!-- Zeile 2 -->
-      <div class="grid-cell"><input class="work-input" data-row="1" data-col="0" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="1" data-col="1" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="1" data-col="2" readonly></div>
-      <!-- Zeile 3 -->
-      <div class="grid-cell"><input class="work-input" data-row="2" data-col="0" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="2" data-col="1" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="2" data-col="2" readonly></div>
-      <!-- Zeile 4 -->
-      <div class="grid-cell"><input class="work-input" data-row="3" data-col="0" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="3" data-col="1" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="3" data-col="2" readonly></div>
-      <!-- Zeile 5 -->
-      <div class="grid-cell"><input class="work-input" data-row="4" data-col="0" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="4" data-col="1" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="4" data-col="2" readonly></div>
-      <!-- Zeile 6 -->
-      <div class="grid-cell"><input class="work-input" data-row="5" data-col="0" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="5" data-col="1" readonly></div>
-      <div class="grid-cell"><input class="work-input" data-row="5" data-col="2" readonly></div>
+    <div class="container">
+        <header>
+            <h1>Schriftliche Division</h1>
+            <p>Löse die Divisionsaufgabe Schritt für Schritt</p>
+        </header>
+        
+        <div class="description">
+            <p><strong>Aufgabe:</strong> Führe die schriftliche Division durch. Ziehe Schritt für Schritt die passenden Zahlen herunter und berechne die Teilergebnisse.</p>
+            <p><strong>Tipp:</strong> Beginne mit der ersten Ziffer des Dividenden. Wenn sie kleiner als der Divisor ist, nimm die ersten beiden Ziffern.</p>
+        </div>
+        
+        <div class="task-container">
+            <div class="division-problem">
+                <span id="dividend">648</span>
+                <span class="division-symbol">÷</span>
+                <span id="divisor">3</span>
+                <span class="division-symbol">=</span>
+                <span id="quotient">?</span>
+            </div>
+            
+            <div class="division-steps" id="steps-container">
+                <!-- Hier werden die schriftlichen Divisionsschritte angezeigt -->
+                <div class="step">
+                    <div class="calculation-line">648 : 3 = 216</div>
+                    <div class="calculation-line">-6</div>
+                    <div class="calculation-line">&nbsp;04</div>
+                    <div class="calculation-line">&nbsp;-3</div>
+                    <div class="calculation-line">&nbsp;&nbsp;18</div>
+                    <div class="calculation-line">&nbsp;&nbsp;-18</div>
+                    <div class="calculation-line">&nbsp;&nbsp;&nbsp;0</div>
+                </div>
+                
+                <div class="result">Ergebnis: 648 ÷ 3 = <strong>216</strong></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="newProblem" class="new-problem">Neue Aufgabe</button>
+            <button id="toggleSteps" class="show-steps">Lösung ein/ausblenden</button>
+            <button id="stepByStep">Schritt für Schritt</button>
+        </div>
+        
+        <footer>
+            <p>Matheaufgabe - Schriftliche Division mit einstelligem Divisor</p>
+            <p>Ähnlich zu matheaufgaben.net | Für Lernzwecke erstellt</p>
+        </footer>
     </div>
-  </div>
 
-  <div class="buttons-row">
-    <button class="btn" id="new-btn">Neue Aufgabe</button>
-    <button class="btn" id="check-btn">Überprüfen</button>
-  </div>
-
-  <div class="feedback" id="feedback"></div>
-</div>
-
-<!-- Popup für Ziffernauswahl -->
-<div class="popup-overlay" id="popup-overlay">
-  <div class="popup">
-    <div class="popup-title">Ziffer auswählen</div>
-    <div class="digit-grid" id="digit-grid"></div>
-    <div class="popup-footer">
-      <button class="popup-close" id="popup-close-btn">Abbrechen</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  const NUM_QUOT_DIGITS = 3; // Quotient bis 3-stellig (z.B. 144)
-  let divisor  = 0;
-  let dividend = 0;
-  let quotient = 0;
-  let quotientDigits = [];
-
-  let activeInput = null;
-
-  const taskLine   = document.getElementById('task-line');
-  const feedbackEl = document.getElementById('feedback');
-
-  const popupOverlay  = document.getElementById('popup-overlay');
-  const digitGrid     = document.getElementById('digit-grid');
-  const popupCloseBtn = document.getElementById('popup-close-btn');
-
-  const newBtn   = document.getElementById('new-btn');
-  const checkBtn = document.getElementById('check-btn');
-
-  let quotInputs = [];  // wird beim Generieren neu aufgebaut
-  const workInputs = Array.from(document.querySelectorAll('.work-input'));
-
-  /* Hilfsfunktionen */
-
-  function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  function digitsOf(num, len) {
-    const arr = new Array(len).fill(0);
-    let n = Math.floor(Math.abs(num));
-    for (let i = len - 1; i >= 0; i--) {
-      arr[i] = n % 10;
-      n = Math.floor(n / 10);
-    }
-    return arr;
-  }
-
-  function resetInputs() {
-    quotInputs.forEach(inp => {
-      inp.value = '';
-      inp.classList.remove('correct', 'incorrect');
-    });
-    workInputs.forEach(inp => {
-      inp.value = '';
-    });
-    feedbackEl.textContent = '';
-    feedbackEl.className = 'feedback';
-  }
-
-  /* Popup */
-
-  function buildDigitButtons() {
-    digitGrid.innerHTML = '';
-    for (let d = 0; d <= 9; d++) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'digit-btn';
-      btn.textContent = String(d);
-      btn.addEventListener('click', () => {
-        if (activeInput) activeInput.value = String(d);
-        hidePopup();
-      });
-      digitGrid.appendChild(btn);
-    }
-  }
-
-  function showPopupForInput(inputEl) {
-    activeInput = inputEl;
-    popupOverlay.style.display = 'flex';
-  }
-
-  function hidePopup() {
-    popupOverlay.style.display = 'none';
-    activeInput = null;
-  }
-
-  popupCloseBtn.addEventListener('click', hidePopup);
-  popupOverlay.addEventListener('click', (e) => {
-    if (e.target === popupOverlay) hidePopup();
-  });
-
-  function attachInputClicks() {
-    const all = [...quotInputs, ...workInputs];
-    all.forEach(inp => {
-      inp.addEventListener('click', () => {
-        inp.classList.remove('correct', 'incorrect');
-        showPopupForInput(inp);
-      });
-    });
-  }
-
-  /* Aufgaben-Generierung */
-
-  function generateProblem() {
-    // Einstelliger Divisor, Dividend dreistellig, ohne Rest
-    divisor = randomInt(2, 9);
-
-    // Quotient 2–3-stellig, so dass Dividend ≤ 999
-    let qMin = 2;
-    let qMax = Math.floor(999 / divisor);
-    if (qMax < qMin) qMax = qMin;
-    quotient = randomInt(qMin, qMax);
-    dividend = divisor * quotient;
-
-    quotientDigits = digitsOf(quotient, NUM_QUOT_DIGITS);
-
-    // Aufgabenzeile aufbauen: 432 : 3 = [ ][ ][ ]
-    taskLine.innerHTML = '';
-    const spanDiv = document.createElement('span');
-    spanDiv.textContent = dividend + ' : ' + divisor + ' = ';
-    taskLine.appendChild(spanDiv);
-
-    quotInputs = [];
-    for (let i = 0; i < NUM_QUOT_DIGITS; i++) {
-      const inp = document.createElement('input');
-      inp.type = 'text';
-      inp.maxLength = 1;
-      inp.className = 'quot-input';
-      inp.setAttribute('data-col', i);
-      taskLine.appendChild(inp);
-      quotInputs.push(inp);
-    }
-
-    resetInputs();
-    attachInputClicks();
-  }
-
-  /* Lösung prüfen – Quotient */
-
-  function checkSolution() {
-    let allCorrect = true;
-
-    quotInputs.forEach(inp => {
-      const col = parseInt(inp.getAttribute('data-col'), 10);
-      const expected = quotientDigits[col];
-      const value = inp.value === '' ? 0 : parseInt(inp.value, 10);
-      inp.classList.remove('correct', 'incorrect');
-      if (value === expected) {
-        inp.classList.add('correct');
-      } else {
-        inp.classList.add('incorrect');
-        allCorrect = false;
-      }
-    });
-
-    if (allCorrect) {
-      feedbackEl.textContent = 'Super, alles korrekt gelöst! 🎉';
-      feedbackEl.className = 'feedback ok';
-    } else {
-      feedbackEl.textContent = 'Der Quotient stimmt noch nicht ganz. Kontrolliere deine Rechnung im Gitter.';
-      feedbackEl.className = 'feedback error';
-    }
-  }
-
-  newBtn.addEventListener('click', generateProblem);
-  checkBtn.addEventListener('click', checkSolution);
-
-  buildDigitButtons();
-  generateProblem();
-</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dividendElement = document.getElementById('dividend');
+            const divisorElement = document.getElementById('divisor');
+            const quotientElement = document.getElementById('quotient');
+            const stepsContainer = document.getElementById('steps-container');
+            const newProblemButton = document.getElementById('newProblem');
+            const toggleStepsButton = document.getElementById('toggleSteps');
+            const stepByStepButton = document.getElementById('stepByStep');
+            
+            // Mögliche Aufgaben
+            const problems = [
+                {dividend: 648, divisor: 3, quotient: 216},
+                {dividend: 735, divisor: 5, quotient: 147},
+                {dividend: 924, divisor: 4, quotient: 231},
+                {dividend: 816, divisor: 8, quotient: 102},
+                {dividend: 972, divisor: 6, quotient: 162},
+                {dividend: 525, divisor: 7, quotient: 75},
+                {dividend: 648, divisor: 9, quotient: 72},
+                {dividend: 448, divisor: 4, quotient: 112}
+            ];
+            
+            let currentProblemIndex = 0;
+            let stepsVisible = true;
+            
+            // Initiale Aufgabe anzeigen
+            showProblem(currentProblemIndex);
+            
+            // Neue Aufgabe generieren
+            newProblemButton.addEventListener('click', function() {
+                currentProblemIndex = (currentProblemIndex + 1) % problems.length;
+                showProblem(currentProblemIndex);
+                
+                // Schritte wieder einblenden
+                stepsContainer.style.display = 'block';
+                stepsVisible = true;
+                toggleStepsButton.textContent = 'Lösung ausblenden';
+            });
+            
+            // Lösung ein-/ausblenden
+            toggleStepsButton.addEventListener('click', function() {
+                stepsVisible = !stepsVisible;
+                stepsContainer.style.display = stepsVisible ? 'block' : 'none';
+                toggleStepsButton.textContent = stepsVisible ? 'Lösung ausblenden' : 'Lösung anzeigen';
+            });
+            
+            // Schritt-für-Schritt Lösung
+            stepByStepButton.addEventListener('click', function() {
+                showStepByStepSolution(problems[currentProblemIndex]);
+            });
+            
+            // Problem anzeigen
+            function showProblem(index) {
+                const problem = problems[index];
+                
+                dividendElement.textContent = problem.dividend;
+                divisorElement.textContent = problem.divisor;
+                quotientElement.textContent = '?';
+                
+                // Berechne die schriftliche Division
+                const steps = calculateLongDivision(problem.dividend, problem.divisor);
+                
+                // Zeige die Lösung
+                setTimeout(() => {
+                    quotientElement.textContent = problem.quotient;
+                    displayDivisionSteps(problem, steps);
+                }, 500);
+            }
+            
+            // Schriftliche Divisionsschritte berechnen
+            function calculateLongDivision(dividend, divisor) {
+                const steps = [];
+                const dividendStr = dividend.toString();
+                let remainder = 0;
+                let currentQuotient = "";
+                
+                for (let i = 0; i < dividendStr.length; i++) {
+                    const currentDigit = parseInt(dividendStr[i]);
+                    const currentNumber = remainder * 10 + currentDigit;
+                    const stepQuotient = Math.floor(currentNumber / divisor);
+                    
+                    if (stepQuotient > 0 || currentQuotient !== "") {
+                        currentQuotient += stepQuotient.toString();
+                    }
+                    
+                    const subtract = stepQuotient * divisor;
+                    const newRemainder = currentNumber - subtract;
+                    
+                    steps.push({
+                        position: i,
+                        currentNumber,
+                        stepQuotient,
+                        subtract,
+                        newRemainder,
+                        currentQuotient: currentQuotient || "0"
+                    });
+                    
+                    remainder = newRemainder;
+                }
+                
+                return steps;
+            }
+            
+            // Divisionsschritte anzeigen
+            function displayDivisionSteps(problem, steps) {
+                let html = '<div class="step">';
+                html += `<div class="calculation-line">${problem.dividend} : ${problem.divisor} = ${problem.quotient}</div>`;
+                
+                let indent = 0;
+                let previousRemainder = 0;
+                
+                for (let i = 0; i < steps.length; i++) {
+                    const step = steps[i];
+                    
+                    // Nur wenn wir etwas abziehen (nicht 0)
+                    if (step.subtract > 0) {
+                        // Zeile mit Abziehen
+                        html += `<div class="calculation-line">${'&nbsp;'.repeat(indent)}-${step.subtract}</div>`;
+                        
+                        // Linie zeichnen
+                        const lineLength = Math.max(step.subtract.toString().length + 1, step.currentNumber.toString().length);
+                        html += `<div class="calculation-line">${'&nbsp;'.repeat(indent)}${'─'.repeat(lineLength)}</div>`;
+                        
+                        // Neuer Rest
+                        if (i < steps.length - 1) {
+                            html += `<div class="calculation-line">${'&nbsp;'.repeat(indent+1)}${step.newRemainder}${problem.dividend.toString()[i+1] || ''}</div>`;
+                        }
+                        
+                        indent += 2;
+                    }
+                }
+                
+                // Letzte Zeile mit Rest 0
+                html += `<div class="calculation-line">${'&nbsp;'.repeat(indent)}-${steps[steps.length-1].newRemainder}</div>`;
+                html += `<div class="calculation-line">${'&nbsp;'.repeat(indent)}─</div>`;
+                html += `<div class="calculation-line">${'&nbsp;'.repeat(indent)}0</div>`;
+                
+                html += '</div>';
+                html += `<div class="result">Ergebnis: ${problem.dividend} ÷ ${problem.divisor} = <strong>${problem.quotient}</strong></div>`;
+                
+                stepsContainer.innerHTML = html;
+            }
+            
+            // Schritt-für-Schritt-Lösung anzeigen
+            function showStepByStepSolution(problem) {
+                const steps = calculateLongDivision(problem.dividend, problem.divisor);
+                
+                let html = '';
+                let currentDisplay = problem.dividend.toString();
+                let resultSoFar = '';
+                let indent = 0;
+                
+                html += `<div class="step"><div class="calculation-line">Wir teilen ${problem.dividend} durch ${problem.divisor}:</div></div>`;
+                
+                for (let i = 0; i < steps.length; i++) {
+                    const step = steps[i];
+                    
+                    html += `<div class="step">`;
+                    html += `<div class="calculation-line"><strong>Schritt ${i+1}:</strong></div>`;
+                    
+                    if (step.currentNumber < problem.divisor && i < steps.length - 1) {
+                        html += `<div class="calculation-line">${step.currentNumber} ist kleiner als ${problem.divisor}, also nehmen wir die nächste Ziffer hinzu: ${step.currentNumber}${problem.dividend.toString()[i+1]}</div>`;
+                    } else {
+                        html += `<div class="calculation-line">Wir betrachten: ${step.currentNumber}</div>`;
+                        html += `<div class="calculation-line">${step.currentNumber} : ${problem.divisor} = ${step.stepQuotient}</div>`;
+                        html += `<div class="calculation-line">${step.stepQuotient} × ${problem.divisor} = ${step.subtract}</div>`;
+                        html += `<div class="calculation-line">${step.currentNumber} - ${step.subtract} = ${step.newRemainder}</div>`;
+                        
+                        resultSoFar += step.stepQuotient.toString();
+                        html += `<div class="calculation-line">Bisheriges Ergebnis: ${resultSoFar}</div>`;
+                        
+                        if (i < steps.length - 1) {
+                            html += `<div class="calculation-line">Wir ziehen die nächste Ziffer herunter: ${step.newRemainder}${problem.dividend.toString()[i+1]}</div>`;
+                        } else {
+                            html += `<div class="calculation-line">Wir haben alle Ziffern bearbeitet. Der Rest ist ${step.newRemainder}.</div>`;
+                        }
+                    }
+                    
+                    html += `</div>`;
+                }
+                
+                html += `<div class="step"><div class="calculation-line"><strong>Endergebnis:</strong> ${problem.dividend} ÷ ${problem.divisor} = ${problem.quotient}</div></div>`;
+                html += `<div class="result">Ergebnis: ${problem.dividend} ÷ ${problem.divisor} = <strong>${problem.quotient}</strong></div>`;
+                
+                stepsContainer.innerHTML = html;
+                stepsContainer.style.display = 'block';
+                stepsVisible = true;
+                toggleStepsButton.textContent = 'Lösung ausblenden';
+            }
+        });
+    </script>
 </body>
 </html>
