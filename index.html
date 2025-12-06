@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schriftliche Division - Interaktive Aufgabe</title>
+    <title>Schriftliche Division - Matheaufgabe</title>
     <style>
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI', Arial, sans-serif;
         }
-        
+
         body {
             margin: 0;
             padding: 20px;
@@ -17,28 +17,28 @@
             color: #333;
             line-height: 1.6;
         }
-        
+
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             padding: 30px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             border-bottom: 2px solid #4a6fa5;
             padding-bottom: 15px;
         }
-        
+
         h1 {
             color: #2c3e50;
             margin-top: 0;
         }
-        
+
         .description {
             background-color: #e8f4fc;
             padding: 15px;
@@ -46,7 +46,7 @@
             margin-bottom: 25px;
             border-left: 4px solid #4a6fa5;
         }
-        
+
         .task-container {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
@@ -54,184 +54,33 @@
             padding: 25px;
             margin-bottom: 25px;
         }
-        
-        .division-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
+
+        .division-problem {
+            font-size: 1.4rem;
             margin-bottom: 20px;
-            padding: 15px;
-            background-color: white;
-            border-radius: 5px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+            text-align: center;
         }
-        
-        .division-header .input-cell {
-            width: 35px;
-            height: 40px;
-            margin: 0 2px;
-        }
-        
+
         .division-symbol {
             font-size: 2rem;
-            margin: 0 15px;
+            vertical-align: middle;
+            margin: 0 10px;
         }
-        
-        .division-grid {
+
+        .division-steps {
             font-family: 'Courier New', monospace;
-            font-size: 1.3rem;
-            line-height: 1.8;
             background-color: white;
             padding: 20px;
             border-radius: 5px;
             border: 1px solid #eee;
             margin-top: 10px;
-            position: relative;
-            min-height: 350px;
-        }
-        
-        .division-layout {
-            position: relative;
-            width: 100%;
-        }
-        
-        .dividend-row {
+            overflow-x: auto;
             display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .divisor-position {
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-        
-        .result-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            position: relative;
-            left: 80px;
-        }
-        
-        .calculation-line {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-            position: relative;
-        }
-        
-        .subtraction-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-            position: relative;
-        }
-        
-        .remainder-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            position: relative;
-        }
-        
-        .horizontal-line {
-            border-top: 1px solid #000;
-            margin: 2px 0;
-            position: relative;
-        }
-        
-        .input-cell {
-            width: 35px;
-            height: 40px;
-            text-align: center;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            margin: 0 1px;
-            font-size: 1.4rem;
-            font-family: 'Courier New', monospace;
-            background-color: #fff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            position: relative;
-            font-weight: bold;
         }
-        
-        .input-cell.filled {
-            background-color: #f0f8ff;
-        }
-        
-        .input-cell.error {
-            background-color: #ffe6e6;
-            border-color: #ff3333;
-            color: #cc0000;
-            animation: shake 0.5s;
-        }
-        
-        .input-cell.correct {
-            background-color: #e6ffe6;
-            border-color: #33cc33;
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-            20%, 40%, 60%, 80% { transform: translateX(2px); }
-        }
-        
-        .input-cell.static {
-            background-color: #f5f5f5;
-            border-color: #ddd;
-            cursor: default;
-        }
-        
-        .digit-popup {
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000;
-            display: none;
-            padding: 8px;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
-            width: 180px;
-        }
-        
-        .digit-option {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            background-color: #f9f9f9;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-        
-        .digit-option:hover {
-            background-color: #4a6fa5;
-            color: white;
-            transform: scale(1.1);
-        }
-        
-        .instructions {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f0f8ff;
-            border-radius: 5px;
-            font-size: 0.95rem;
-            border-left: 3px solid #4a6fa5;
-        }
-        
+
         .controls {
             display: flex;
             justify-content: space-between;
@@ -239,7 +88,7 @@
             gap: 10px;
             margin-top: 30px;
         }
-        
+
         button {
             padding: 12px 24px;
             background-color: #4a6fa5;
@@ -249,73 +98,28 @@
             cursor: pointer;
             font-size: 1rem;
             transition: background-color 0.3s;
-            font-weight: bold;
         }
-        
+
         button:hover {
             background-color: #3a5a80;
         }
-        
+
         .new-problem {
             background-color: #2ecc71;
         }
-        
+
         .new-problem:hover {
             background-color: #27ae60;
         }
-        
-        .check-button {
+
+        .reset-btn {
             background-color: #e67e22;
         }
-        
-        .check-button:hover {
+
+        .reset-btn:hover {
             background-color: #d35400;
         }
-        
-        .show-solution {
-            background-color: #9b59b6;
-        }
-        
-        .show-solution:hover {
-            background-color: #8e44ad;
-        }
-        
-        .feedback {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            display: none;
-            font-weight: bold;
-        }
-        
-        .feedback.correct {
-            background-color: #e6ffe6;
-            border: 2px solid #33cc33;
-            color: #206020;
-        }
-        
-        .feedback.incorrect {
-            background-color: #ffe6e6;
-            border: 2px solid #ff3333;
-            color: #cc0000;
-        }
-        
-        .solution-container {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            display: none;
-        }
-        
-        .division-placeholder {
-            color: #999;
-            font-style: italic;
-            text-align: center;
-            padding: 20px;
-        }
-        
+
         footer {
             margin-top: 30px;
             text-align: center;
@@ -324,790 +128,396 @@
             border-top: 1px solid #eee;
             padding-top: 15px;
         }
-        
-        .position-indicator {
-            position: absolute;
-            width: 30px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #888;
-        }
-        
-        .divisor-box {
-            position: absolute;
-            left: 10px;
-            top: 0;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        
-        .result-box {
-            position: absolute;
-            right: 10px;
-            top: 0;
-            font-size: 1.5rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        
-        @media (max-width: 768px) {
+
+        @media (max-width: 600px) {
             .container {
                 padding: 15px;
             }
-            
+
             .controls {
                 flex-direction: column;
             }
-            
+
             button {
                 width: 100%;
             }
-            
-            .division-grid {
-                font-size: 1.1rem;
-                padding: 15px;
-                overflow-x: auto;
-            }
-            
-            .input-cell {
-                width: 30px;
-                height: 35px;
-                font-size: 1.2rem;
-            }
-            
-            .division-header .input-cell {
-                width: 30px;
-                height: 35px;
-            }
         }
-        
-        .operation-row {
+
+        /* --- Interaktive Teile (mein Stil) --- */
+
+        .quot-input {
+            width: 2.1rem;
+            height: 2.1rem;
+            border-radius: 8px;
+            border: 2px solid #d1d5db;
+            font-size: 1.1rem;
+            text-align: center;
+            background: #f9fafb;
+            cursor: pointer;
+            margin-left: 0.1rem;
+        }
+        .quot-input.correct {
+            border-color: #16a34a;
+            background: #dcfce7;
+        }
+        .quot-input.incorrect {
+            border-color: #b91c1c;
+            background: #fee2e2;
+        }
+
+        .grid-wrapper {
+            display: inline-block;
+            border: 1px solid #e5e7eb;
+            padding: 2px;
+            background: #f9fafb;
+        }
+        .division-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 2.2rem); /* H, Z, E */
+            grid-auto-rows: 2.1rem;
+        }
+        .grid-cell {
+            border: 1px solid #e5e7eb; /* kariertes Papier */
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
-            position: relative;
-            left: 80px;
+            justify-content: center;
         }
-        
-        .drag-down {
-            position: absolute;
-            font-size: 1.2rem;
-            color: #666;
-            left: -25px;
+        .work-input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 1.05rem;
+            cursor: pointer;
+        }
+        .work-input:focus {
+            outline: none;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            text-align: center;
+            min-height: 1.2rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .feedback.ok { color: #15803d; }
+        .feedback.error { color: #b91c1c; }
+
+        /* Popup */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.35);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .popup {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 0.8rem 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            max-width: 260px;
+            width: 100%;
+        }
+        .popup-title {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+        .digit-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0,1fr));
+            gap: 0.3rem;
+            margin-bottom: 0.4rem;
+        }
+        .digit-btn {
+            padding: 0.3rem 0;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            font-size: 1.05rem;
+            cursor: pointer;
+        }
+        .digit-btn:hover {
+            background: #e5e7eb;
+        }
+        .popup-footer {
+            text-align: center;
+        }
+        .popup-close {
+            padding: 0.25rem 0.8rem;
+            border-radius: 999px;
+            border: none;
+            background: #e5e7eb;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .popup-close:hover {
+            background: #d1d5db;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Schriftliche Division - Interaktive Aufgabe</h1>
-            <p>Führe die schriftliche Division selbst durch!</p>
-        </header>
-        
-        <div class="description">
-            <p><strong>Aufgabe:</strong> Führe die schriftliche Division durch und trage die Ergebnisse in die leeren Kästchen ein.</p>
-            <p><strong>Anleitung:</strong> Klicke auf ein leeres Kästchen und wähle dann eine Ziffer (0-9) aus dem Popup-Menü. Fülle alle Felder aus und klicke dann auf "Ich bin fertig" zur Überprüfung.</p>
-        </div>
-        
-        <div class="task-container">
-            <!-- Aufgabenzeile mit Eingabefeldern für das Ergebnis -->
-            <div class="division-header" id="division-header">
-                <!-- Wird dynamisch mit JavaScript erstellt -->
-            </div>
-            
-            <!-- Divisionsraster mit korrekter Positionierung -->
-            <div class="division-grid" id="division-grid">
-                <div class="division-placeholder">Klicke auf die leeren Kästchen, um Ziffern einzugeben...</div>
-            </div>
-            
-            <div class="instructions">
-                <p><strong>Schritt-für-Schritt Anleitung:</strong></p>
-                <ol>
-                    <li>Beginne mit der ersten Ziffer des Dividenden</li>
-                    <li>Teile durch den Divisor und trage das Ergebnis in die obere Ergebniszeile ein</li>
-                    <li>Multipliziere das Teilergebnis mit dem Divisor und trage es unter die entsprechende Stelle ein</li>
-                    <li>Subtrahiere und ziehe die nächste Ziffer herunter</li>
-                    <li>Wiederhole die Schritte bis alle Ziffern bearbeitet sind</li>
-                </ol>
-            </div>
-            
-            <div class="feedback" id="feedback">
-                <!-- Feedback wird hier eingefügt -->
-            </div>
-            
-            <div class="solution-container" id="solution-container">
-                <!-- Lösung wird hier angezeigt -->
-            </div>
-        </div>
-        
-        <div class="controls">
-            <button id="newProblem" class="new-problem">Neue Aufgabe</button>
-            <button id="checkButton" class="check-button">Ich bin fertig - Lösung prüfen</button>
-            <button id="showSolution" class="show-solution">Lösung anzeigen</button>
-        </div>
-        
-        <footer>
-            <p>Interaktive Matheaufgabe - Schriftliche Division mit einstelligem Divisor</p>
-            <p>Klicke auf die Kästchen und wähle Ziffern aus dem Popup-Menü</p>
-        </footer>
+<div class="container">
+    <header>
+        <h1>Schriftliche Division</h1>
+        <p>Löse die Divisionsaufgabe Schritt für Schritt</p>
+    </header>
+
+    <div class="description">
+        <p><strong>Aufgabe:</strong> Führe die schriftliche Division durch. Trage Quotient und Rechenschritte in die Kästchen ein.</p>
+        <p><strong>Tipp:</strong> Beginne mit der ersten Ziffer des Dividenden. Wenn sie kleiner als der Divisor ist, nimm die ersten beiden Ziffern.</p>
     </div>
 
-    <!-- Popup für Ziffernauswahl -->
-    <div class="digit-popup" id="digit-popup">
-        <!-- Ziffern 0-9 werden hier dynamisch eingefügt -->
+    <div class="task-container">
+        <!-- Aufgabenzeile -->
+        <div class="division-problem" id="division-problem">
+            <!-- wird per JS aufgebaut: 432 ÷ 3 = [ ][ ][ ] -->
+        </div>
+
+        <!-- Schriftliches Rechnen im Gitter, wie auf kariertem Papier -->
+        <div class="division-steps">
+            <div class="grid-wrapper">
+                <div class="division-grid" id="division-grid">
+                    <!-- 6 Zeilen × 3 Spalten, alles Eingabefelder -->
+                    <!-- Zeile 0 -->
+                    <div class="grid-cell"><input class="work-input" data-row="0" data-col="0" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="0" data-col="1" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="0" data-col="2" readonly></div>
+                    <!-- Zeile 1 -->
+                    <div class="grid-cell"><input class="work-input" data-row="1" data-col="0" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="1" data-col="1" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="1" data-col="2" readonly></div>
+                    <!-- Zeile 2 -->
+                    <div class="grid-cell"><input class="work-input" data-row="2" data-col="0" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="2" data-col="1" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="2" data-col="2" readonly></div>
+                    <!-- Zeile 3 -->
+                    <div class="grid-cell"><input class="work-input" data-row="3" data-col="0" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="3" data-col="1" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="3" data-col="2" readonly></div>
+                    <!-- Zeile 4 -->
+                    <div class="grid-cell"><input class="work-input" data-row="4" data-col="0" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="4" data-col="1" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="4" data-col="2" readonly></div>
+                    <!-- Zeile 5 -->
+                    <div class="grid-cell"><input class="work-input" data-row="5" data-col="0" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="5" data-col="1" readonly></div>
+                    <div class="grid-cell"><input class="work-input" data-row="5" data-col="2" readonly></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM-Elemente
-            const divisionHeader = document.getElementById('division-header');
-            const divisionGrid = document.getElementById('division-grid');
-            const digitPopup = document.getElementById('digit-popup');
-            const feedbackElement = document.getElementById('feedback');
-            const solutionContainer = document.getElementById('solution-container');
-            const newProblemButton = document.getElementById('newProblem');
-            const checkButton = document.getElementById('checkButton');
-            const showSolutionButton = document.getElementById('showSolution');
-            
-            // Aktuelle Aufgabe
-            let currentProblem = null;
-            // Eingabefelder-Array
-            let inputCells = [];
-            // Aktuell ausgewähltes Eingabefeld
-            let activeCell = null;
-            // Position des Divisors und Ergebnisses
-            let divisorPosition = null;
-            let resultPosition = null;
-            
-            // Mögliche Aufgaben
-            const problems = [
-                {dividend: 648, divisor: 3, quotient: 216},
-                {dividend: 735, divisor: 5, quotient: 147},
-                {dividend: 924, divisor: 4, quotient: 231},
-                {dividend: 816, divisor: 8, quotient: 102},
-                {dividend: 972, divisor: 6, quotient: 162},
-                {dividend: 525, divisor: 7, quotient: 75},
-                {dividend: 648, divisor: 9, quotient: 72},
-                {dividend: 448, divisor: 4, quotient: 112}
-            ];
-            
-            // Initialisierung
-            init();
-            
-            function init() {
-                // Ziffern-Popup vorbereiten
-                setupDigitPopup();
-                
-                // Erste Aufgabe laden
-                loadNewProblem();
-                
-                // Event-Listener
-                newProblemButton.addEventListener('click', loadNewProblem);
-                checkButton.addEventListener('click', checkSolution);
-                showSolutionButton.addEventListener('click', showSolution);
-                
-                // Klick außerhalb des Popups schließt es
-                document.addEventListener('click', function(e) {
-                    if (!digitPopup.contains(e.target) && !(activeCell && activeCell.contains(e.target))) {
-                        digitPopup.style.display = 'none';
-                    }
-                });
-            }
-            
-            function setupDigitPopup() {
-                let popupContent = '';
-                for (let i = 0; i <= 9; i++) {
-                    popupContent += `<div class="digit-option" data-digit="${i}">${i}</div>`;
-                }
-                // Auch Löschen-Option hinzufügen
-                popupContent += `<div class="digit-option" data-digit="clear" style="grid-column: span 2; background-color: #ffcccc;">Löschen</div>`;
-                digitPopup.innerHTML = popupContent;
-                
-                // Event-Listener für Ziffernauswahl
-                document.querySelectorAll('.digit-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        const digit = this.getAttribute('data-digit');
-                        if (activeCell) {
-                            if (digit === 'clear') {
-                                activeCell.textContent = '';
-                                activeCell.classList.remove('filled');
-                                activeCell.classList.remove('error');
-                                activeCell.classList.remove('correct');
-                            } else {
-                                activeCell.textContent = digit;
-                                activeCell.classList.add('filled');
-                                activeCell.classList.remove('error');
-                                activeCell.classList.remove('correct');
-                            }
-                        }
-                        digitPopup.style.display = 'none';
-                    });
-                });
-            }
-            
-            function loadNewProblem() {
-                // Zufällige Aufgabe auswählen
-                const randomIndex = Math.floor(Math.random() * problems.length);
-                currentProblem = problems[randomIndex];
-                
-                // Feedback und Lösung ausblenden
-                feedbackElement.style.display = 'none';
-                solutionContainer.style.display = 'none';
-                feedbackElement.className = 'feedback';
-                
-                // Divisions-Header und Raster erstellen
-                createDivisionHeader();
-                createDivisionGrid();
-            }
-            
-            function createDivisionHeader() {
-                // Header leeren
-                divisionHeader.innerHTML = '';
-                
-                const dividend = currentProblem.dividend;
-                const divisor = currentProblem.divisor;
-                const quotient = currentProblem.quotient;
-                const quotientStr = quotient.toString();
-                
-                // Dividend anzeigen (fest)
-                const dividendSpan = document.createElement('span');
-                dividendSpan.textContent = dividend;
-                dividendSpan.style.fontSize = '1.8rem';
-                dividendSpan.style.marginRight = '10px';
-                divisionHeader.appendChild(dividendSpan);
-                
-                // Divisionszeichen
-                const divideSymbol = document.createElement('span');
-                divideSymbol.textContent = '÷';
-                divideSymbol.className = 'division-symbol';
-                divisionHeader.appendChild(divideSymbol);
-                
-                // Divisor anzeigen (fest)
-                const divisorSpan = document.createElement('span');
-                divisorSpan.textContent = divisor;
-                divisorSpan.style.fontSize = '1.8rem';
-                divisorSpan.style.marginRight = '10px';
-                divisionHeader.appendChild(divisorSpan);
-                
-                // Gleichheitszeichen
-                const equalsSymbol = document.createElement('span');
-                equalsSymbol.textContent = '=';
-                equalsSymbol.className = 'division-symbol';
-                divisionHeader.appendChild(equalsSymbol);
-                
-                // Eingabefelder für das Ergebnis (Quotient)
-                for (let i = 0; i < quotientStr.length; i++) {
-                    const inputCell = document.createElement('div');
-                    inputCell.className = 'input-cell';
-                    inputCell.setAttribute('data-type', 'quotient');
-                    inputCell.setAttribute('data-position', i);
-                    divisionHeader.appendChild(inputCell);
-                    
-                    // Event-Listener hinzufügen
-                    addCellEventListener(inputCell);
-                    inputCells.push(inputCell);
-                }
-            }
-            
-            function createDivisionGrid() {
-                // Raster leeren
-                divisionGrid.innerHTML = '';
-                inputCells = [];
-                
-                const dividend = currentProblem.dividend;
-                const divisor = currentProblem.divisor;
-                const quotient = currentProblem.quotient;
-                const dividendStr = dividend.toString();
-                const quotientStr = quotient.toString();
-                
-                // Berechnungsschritte
-                const steps = calculateDivisionSteps(dividend, divisor);
-                
-                // Layout-Container
-                const layout = document.createElement('div');
-                layout.className = 'division-layout';
-                
-                // Divisor außerhalb (links)
-                const divisorBox = document.createElement('div');
-                divisorBox.className = 'divisor-box';
-                divisorBox.textContent = divisor;
-                layout.appendChild(divisorBox);
-                
-                // Ergebnis oben rechts
-                const resultBox = document.createElement('div');
-                resultBox.className = 'result-box';
-                resultBox.innerHTML = `<span style="margin-right: 5px;">=</span>`;
-                
-                // Eingabefelder für Ergebnis hinzufügen
-                for (let i = 0; i < quotientStr.length; i++) {
-                    const inputCell = document.createElement('div');
-                    inputCell.className = 'input-cell';
-                    inputCell.setAttribute('data-type', 'quotient-grid');
-                    inputCell.setAttribute('data-position', i);
-                    resultBox.appendChild(inputCell);
-                    
-                    // Event-Listener hinzufügen
-                    addCellEventListener(inputCell);
-                    inputCells.push(inputCell);
-                }
-                
-                layout.appendChild(resultBox);
-                
-                // Dividend-Zeile (oben)
-                const dividendRow = document.createElement('div');
-                dividendRow.className = 'dividend-row';
-                dividendRow.style.left = '80px';
-                dividendRow.style.position = 'relative';
-                
-                // Dividend als statische Kästchen
-                for (let i = 0; i < dividendStr.length; i++) {
-                    const staticCell = document.createElement('div');
-                    staticCell.className = 'input-cell static';
-                    staticCell.textContent = dividendStr[i];
-                    dividendRow.appendChild(staticCell);
-                }
-                
-                layout.appendChild(dividendRow);
-                
-                // Horizontale Linie unter dem Dividenden
-                const line1 = document.createElement('div');
-                line1.className = 'horizontal-line';
-                line1.style.width = (dividendStr.length * 37) + 'px';
-                line1.style.left = '80px';
-                line1.style.position = 'relative';
-                line1.style.marginTop = '5px';
-                line1.style.marginBottom = '10px';
-                layout.appendChild(line1);
-                
-                // Berechnungsschritte hinzufügen
-                let currentY = 60; // Startposition unter der ersten Linie
-                let previousRemainder = '';
-                
-                for (let i = 0; i < steps.length; i++) {
-                    const step = steps[i];
-                    
-                    if (step.subtract > 0) {
-                        // Subtraktionszeile
-                        const subtractionRow = document.createElement('div');
-                        subtractionRow.className = 'subtraction-row';
-                        subtractionRow.style.left = (80 + (step.position * 37)) + 'px';
-                        subtractionRow.style.position = 'relative';
-                        subtractionRow.style.top = currentY + 'px';
-                        
-                        // Minuszeichen
-                        const minusSpan = document.createElement('span');
-                        minusSpan.textContent = '−';
-                        minusSpan.style.marginRight = '5px';
-                        minusSpan.style.fontSize = '1.5rem';
-                        subtractionRow.appendChild(minusSpan);
-                        
-                        // Eingabefelder für Subtraktionswert
-                        const subtractStr = step.subtract.toString();
-                        for (let j = 0; j < subtractStr.length; j++) {
-                            const inputCell = document.createElement('div');
-                            inputCell.className = 'input-cell';
-                            inputCell.setAttribute('data-type', 'subtract');
-                            inputCell.setAttribute('data-step', i);
-                            inputCell.setAttribute('data-position', j);
-                            subtractionRow.appendChild(inputCell);
-                            
-                            addCellEventListener(inputCell);
-                            inputCells.push(inputCell);
-                        }
-                        
-                        layout.appendChild(subtractionRow);
-                        
-                        // Horizontale Linie unter der Subtraktion
-                        const line2 = document.createElement('div');
-                        line2.className = 'horizontal-line';
-                        line2.style.width = (subtractStr.length * 37 + 20) + 'px';
-                        line2.style.left = (80 + (step.position * 37)) + 'px';
-                        line2.style.position = 'relative';
-                        line2.style.top = (currentY + 45) + 'px';
-                        line2.style.marginBottom = '15px';
-                        layout.appendChild(line2);
-                        
-                        // Restzeile
-                        const remainderRow = document.createElement('div');
-                        remainderRow.className = 'remainder-row';
-                        remainderRow.style.left = (80 + (step.position * 37)) + 'px';
-                        remainderRow.style.position = 'relative';
-                        remainderRow.style.top = (currentY + 50) + 'px';
-                        
-                        // Eingabefelder für Rest
-                        const remainderStr = step.newRemainder.toString();
-                        for (let j = 0; j < remainderStr.length; j++) {
-                            const inputCell = document.createElement('div');
-                            inputCell.className = 'input-cell';
-                            inputCell.setAttribute('data-type', 'remainder');
-                            inputCell.setAttribute('data-step', i);
-                            inputCell.setAttribute('data-position', j);
-                            remainderRow.appendChild(inputCell);
-                            
-                            addCellEventListener(inputCell);
-                            inputCells.push(inputCell);
-                        }
-                        
-                        // Nächste Ziffer herunterziehen (wenn vorhanden)
-                        if (i < steps.length - 1 && step.newRemainder > 0) {
-                            const nextDigit = document.createElement('span');
-                            nextDigit.textContent = dividendStr[i+1];
-                            nextDigit.style.marginLeft = '5px';
-                            nextDigit.style.fontSize = '1.4rem';
-                            remainderRow.appendChild(nextDigit);
-                            
-                            // Pfeil für "herunterziehen"
-                            const dragArrow = document.createElement('span');
-                            dragArrow.className = 'drag-down';
-                            dragArrow.textContent = '↡';
-                            dragArrow.style.position = 'absolute';
-                            dragArrow.style.left = '-25px';
-                            dragArrow.style.top = '10px';
-                            remainderRow.appendChild(dragArrow);
-                        }
-                        
-                        layout.appendChild(remainderRow);
-                        
-                        currentY += 100;
-                    }
-                }
-                
-                // Endrest (letzte Zeile)
-                const finalRemainder = steps[steps.length - 1].newRemainder;
-                if (finalRemainder === 0) {
-                    const finalRow = document.createElement('div');
-                    finalRow.className = 'remainder-row';
-                    finalRow.style.left = '80px';
-                    finalRow.style.position = 'relative';
-                    finalRow.style.top = (currentY + 20) + 'px';
-                    
-                    const inputCell = document.createElement('div');
-                    inputCell.className = 'input-cell';
-                    inputCell.setAttribute('data-type', 'final-remainder');
-                    finalRow.appendChild(inputCell);
-                    
-                    addCellEventListener(inputCell);
-                    inputCells.push(inputCell);
-                    
-                    layout.appendChild(finalRow);
-                }
-                
-                divisionGrid.innerHTML = '';
-                divisionGrid.appendChild(layout);
-            }
-            
-            function addCellEventListener(cell) {
-                cell.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    activeCell = this;
-                    
-                    // Popup positionieren
-                    const rect = this.getBoundingClientRect();
-                    digitPopup.style.left = (rect.left + window.scrollX) + 'px';
-                    digitPopup.style.top = (rect.bottom + window.scrollY) + 'px';
-                    digitPopup.style.display = 'grid';
-                });
-            }
-            
-            function calculateDivisionSteps(dividend, divisor) {
-                const steps = [];
-                const dividendStr = dividend.toString();
-                let remainder = 0;
-                
-                for (let i = 0; i < dividendStr.length; i++) {
-                    const currentDigit = parseInt(dividendStr[i]);
-                    const currentNumber = remainder * 10 + currentDigit;
-                    
-                    if (currentNumber >= divisor || remainder > 0) {
-                        const stepQuotient = Math.floor(currentNumber / divisor);
-                        const subtract = stepQuotient * divisor;
-                        const newRemainder = currentNumber - subtract;
-                        
-                        steps.push({
-                            position: i,
-                            currentNumber,
-                            stepQuotient,
-                            subtract,
-                            newRemainder
-                        });
-                        
-                        remainder = newRemainder;
-                    } else {
-                        steps.push({
-                            position: i,
-                            currentNumber,
-                            stepQuotient: 0,
-                            subtract: 0,
-                            newRemainder: currentNumber
-                        });
-                        remainder = currentNumber;
-                    }
-                }
-                
-                return steps;
-            }
-            
-            function checkSolution() {
-                // Alle Fehler zurücksetzen
-                inputCells.forEach(cell => {
-                    cell.classList.remove('error');
-                    cell.classList.remove('correct');
-                });
-                
-                const dividend = currentProblem.dividend;
-                const divisor = currentProblem.divisor;
-                const expectedQuotient = currentProblem.quotient;
-                
-                // Benutzereingaben sammeln
-                const userInputs = {};
-                inputCells.forEach(cell => {
-                    const type = cell.getAttribute('data-type');
-                    const digit = cell.textContent.trim();
-                    
-                    if (digit !== '') {
-                        if (!userInputs[type]) userInputs[type] = [];
-                        userInputs[type].push({
-                            cell: cell,
-                            digit: digit,
-                            step: cell.getAttribute('data-step'),
-                            position: cell.getAttribute('data-position')
-                        });
-                    }
-                });
-                
-                // Überprüfung
-                let allCorrect = true;
-                let errorMessages = [];
-                
-                // 1. Quotient in der Kopfzeile überprüfen
-                const quotientCells = userInputs['quotient'] || [];
-                let userQuotientHeader = '';
-                quotientCells.sort((a, b) => a.position - b.position);
-                quotientCells.forEach(item => userQuotientHeader += item.digit);
-                
-                // 2. Quotient im Raster überprüfen
-                const quotientGridCells = userInputs['quotient-grid'] || [];
-                let userQuotientGrid = '';
-                quotientGridCells.sort((a, b) => a.position - b.position);
-                quotientGridCells.forEach(item => userQuotientGrid += item.digit);
-                
-                // Kombinierten Quotienten prüfen
-                const userQuotient = userQuotientHeader || userQuotientGrid;
-                
-                if (userQuotient !== expectedQuotient.toString()) {
-                    allCorrect = false;
-                    errorMessages.push(`Der Quotient ist falsch. Deine Eingabe: ${userQuotient || '(leer)'}, richtig: ${expectedQuotient}`);
-                    
-                    // Falsche Ziffern markieren
-                    [...quotientCells, ...quotientGridCells].forEach((item, index) => {
-                        const expectedDigit = expectedQuotient.toString()[index];
-                        if (item.digit !== expectedDigit) {
-                            item.cell.classList.add('error');
-                        } else {
-                            item.cell.classList.add('correct');
-                        }
-                    });
-                } else {
-                    // Alle Quotient-Ziffern als korrekt markieren
-                    [...quotientCells, ...quotientGridCells].forEach(item => item.cell.classList.add('correct'));
-                }
-                
-                // 3. Subtraktionswerte überprüfen
-                const subtractCells = userInputs['subtract'] || [];
-                const steps = calculateDivisionSteps(dividend, divisor);
-                
-                subtractCells.forEach(item => {
-                    const stepIndex = parseInt(item.step);
-                    const position = parseInt(item.position);
-                    const step = steps[stepIndex];
-                    
-                    if (step && step.subtract > 0) {
-                        const subtractStr = step.subtract.toString();
-                        const expectedDigit = subtractStr[position];
-                        
-                        if (item.digit !== expectedDigit) {
-                            allCorrect = false;
-                            item.cell.classList.add('error');
-                        } else {
-                            item.cell.classList.add('correct');
-                        }
-                    }
-                });
-                
-                // 4. Restwerte überprüfen
-                const remainderCells = userInputs['remainder'] || [];
-                remainderCells.forEach(item => {
-                    const stepIndex = parseInt(item.step);
-                    const position = parseInt(item.position);
-                    const step = steps[stepIndex];
-                    
-                    if (step && step.newRemainder > 0) {
-                        const remainderStr = step.newRemainder.toString();
-                        const expectedDigit = remainderStr[position];
-                        
-                        if (item.digit !== expectedDigit) {
-                            allCorrect = false;
-                            item.cell.classList.add('error');
-                        } else {
-                            item.cell.classList.add('correct');
-                        }
-                    }
-                });
-                
-                // 5. Endrest überprüfen
-                const finalRemainderCells = userInputs['final-remainder'] || [];
-                const lastStep = steps[steps.length - 1];
-                
-                if (finalRemainderCells.length > 0) {
-                    const userRemainder = finalRemainderCells[0].digit;
-                    if (userRemainder !== lastStep.newRemainder.toString()) {
-                        allCorrect = false;
-                        finalRemainderCells[0].cell.classList.add('error');
-                    } else {
-                        finalRemainderCells[0].cell.classList.add('correct');
-                    }
-                }
-                
-                // Feedback anzeigen
-                feedbackElement.style.display = 'block';
-                
-                if (allCorrect) {
-                    feedbackElement.textContent = `Perfekt! ${dividend} ÷ ${divisor} = ${expectedQuotient}`;
-                    feedbackElement.className = 'feedback correct';
-                    
-                    // Auch die Quotient-Eingabefelder in der Kopfzeile aktualisieren
-                    const headerCells = document.querySelectorAll('#division-header .input-cell[data-type="quotient"]');
-                    headerCells.forEach((cell, index) => {
-                        if (cell.textContent.trim() === '') {
-                            cell.textContent = expectedQuotient.toString()[index];
-                            cell.classList.add('filled', 'correct');
-                        }
-                    });
-                } else {
-                    let feedbackText = 'Es gibt noch Fehler in deiner Rechnung. ';
-                    if (errorMessages.length > 0) {
-                        feedbackText += errorMessages.join(' ');
-                    } else {
-                        feedbackText += 'Überprüfe alle markierten roten Felder.';
-                    }
-                    feedbackElement.textContent = feedbackText;
-                    feedbackElement.className = 'feedback incorrect';
-                }
-            }
-            
-            function showSolution() {
-                const dividend = currentProblem.dividend;
-                const divisor = currentProblem.divisor;
-                const quotient = currentProblem.quotient;
-                
-                // Berechnungsschritte
-                const steps = calculateDivisionSteps(dividend, divisor);
-                
-                let solutionHTML = '<h3>Kompletter Lösungsweg:</h3>';
-                solutionHTML += `<p style="font-size: 1.2rem;"><strong>${dividend} ÷ ${divisor} = ${quotient}</strong></p>`;
-                solutionHTML += '<div style="font-family: Courier New, monospace; font-size: 1.1rem; margin-top: 15px; line-height: 1.8;">';
-                
-                // Schriftliche Division darstellen
-                solutionHTML += `<pre style="margin: 0; padding: 10px; background-color: #f5f5f5; border-radius: 5px;">`;
-                
-                let calculation = ` ${dividend} : ${divisor} = ${quotient}\n`;
-                
-                let indent = 0;
-                for (let i = 0; i < steps.length; i++) {
-                    const step = steps[i];
-                    
-                    if (step.subtract > 0) {
-                        calculation += `${' '.repeat(indent)}-${step.subtract}\n`;
-                        calculation += `${' '.repeat(indent)}---\n`;
-                        
-                        if (i < steps.length - 1) {
-                            calculation += `${' '.repeat(indent+1)}${step.newRemainder}${dividend.toString()[i+1]}\n`;
-                        } else {
-                            calculation += `${' '.repeat(indent+1)}${step.newRemainder}\n`;
-                        }
-                        
-                        indent += 1;
-                    }
-                }
-                
-                solutionHTML += calculation;
-                solutionHTML += `</pre>`;
-                
-                solutionHTML += '</div>';
-                solutionHTML += `<p style="margin-top: 15px; font-size: 1.1rem;"><strong>Ergebnis: ${dividend} ÷ ${divisor} = ${quotient}</strong></p>`;
-                
-                solutionContainer.innerHTML = solutionHTML;
-                solutionContainer.style.display = 'block';
-                
-                // Auch alle Eingabefelder mit der richtigen Lösung füllen
-                fillAllCellsWithSolution();
-            }
-            
-            function fillAllCellsWithSolution() {
-                const dividend = currentProblem.dividend;
-                const divisor = currentProblem.divisor;
-                const quotient = currentProblem.quotient;
-                const steps = calculateDivisionSteps(dividend, divisor);
-                
-                // Quotient in der Kopfzeile
-                const quotientStr = quotient.toString();
-                const headerCells = document.querySelectorAll('#division-header .input-cell[data-type="quotient"]');
-                headerCells.forEach((cell, index) => {
-                    if (cell.textContent.trim() === '') {
-                        cell.textContent = quotientStr[index];
-                        cell.classList.add('filled', 'correct');
-                    }
-                });
-                
-                // Quotient im Raster
-                const gridQuotientCells = document.querySelectorAll('.input-cell[data-type="quotient-grid"]');
-                gridQuotientCells.forEach((cell, index) => {
-                    if (cell.textContent.trim() === '') {
-                        cell.textContent = quotientStr[index];
-                        cell.classList.add('filled', 'correct');
-                    }
-                });
-                
-                // Subtraktionswerte
-                const subtractCells = document.querySelectorAll('.input-cell[data-type="subtract"]');
-                subtractCells.forEach(cell => {
-                    const stepIndex = parseInt(cell.getAttribute('data-step'));
-                    const position = parseInt(cell.getAttribute('data-position'));
-                    const step = steps[stepIndex];
-                    
-                    if (step && step.subtract > 0 && cell.textContent.trim() === '') {
-                        const subtractStr = step.subtract.toString();
-                        cell.textContent = subtractStr[position];
-                        cell.classList.add('filled', 'correct');
-                    }
-                });
-                
-                // Restwerte
-                const remainderCells = document.querySelectorAll('.input-cell[data-type="remainder"]');
-                remainderCells.forEach(cell => {
-                    const stepIndex = parseInt(cell.getAttribute('data-step'));
-                    const position = parseInt(cell.getAttribute('data-position'));
-                    const step = steps[stepIndex];
-                    
-                    if (step && step.newRemainder > 0 && cell.textContent.trim() === '') {
-                        const remainderStr = step.newRemainder.toString();
-                        cell.textContent = remainderStr[position];
-                        cell.classList.add('filled', 'correct');
-                    }
-                });
-                
-                // Endrest
-                const finalCells = document.querySelectorAll('.input-cell[data-type="final-remainder"]');
-                const lastStep = steps[steps.length - 1];
-                finalCells.forEach(cell => {
-                    if (cell.textContent.trim() === '') {
-                        cell.textContent = lastStep.newRemainder.toString();
-                        cell.classList.add('filled', 'correct');
-                    }
-                });
+    <div class="controls">
+        <button id="newProblem" class="new-problem">Neue Aufgabe</button>
+        <button id="checkBtn">Überprüfen</button>
+        <button id="resetBtn" class="reset-btn">Felder leeren</button>
+    </div>
+
+    <footer>
+        <p>Matheaufgabe - Schriftliche Division mit einstelligem Divisor</p>
+        <p>Angelehnt an matheaufgaben.net – interaktive Übung</p>
+    </footer>
+</div>
+
+<!-- Popup für Ziffernauswahl -->
+<div class="popup-overlay" id="popup-overlay">
+    <div class="popup">
+        <div class="popup-title">Ziffer auswählen</div>
+        <div class="digit-grid" id="digit-grid"></div>
+        <div class="popup-footer">
+            <button class="popup-close" id="popup-close-btn">Abbrechen</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const NUM_QUOT_DIGITS = 3; // Quotient bis 3-stellig (z.B. 216)
+    let divisor = 0;
+    let dividend = 0;
+    let quotient = 0;
+    let quotientDigits = [];
+
+    let activeInput = null;
+
+    const divisionProblem = document.getElementById('division-problem');
+    const feedbackEl      = document.getElementById('feedback');
+
+    const gridInputs = Array.from(document.querySelectorAll('.work-input'));
+
+    const newProblemBtn = document.getElementById('newProblem');
+    const checkBtn      = document.getElementById('checkBtn');
+    const resetBtn      = document.getElementById('resetBtn');
+
+    const popupOverlay  = document.getElementById('popup-overlay');
+    const digitGrid     = document.getElementById('digit-grid');
+    const popupCloseBtn = document.getElementById('popup-close-btn');
+
+    let quotInputs = [];
+
+    function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function digitsOf(num, len) {
+        const arr = new Array(len).fill(0);
+        let n = Math.floor(Math.abs(num));
+        for (let i = len - 1; i >= 0; i--) {
+            arr[i] = n % 10;
+            n = Math.floor(n / 10);
+        }
+        return arr;
+    }
+
+    function resetInputs() {
+        quotInputs.forEach(inp => {
+            inp.value = '';
+            inp.classList.remove('correct', 'incorrect');
+        });
+        gridInputs.forEach(inp => {
+            inp.value = '';
+        });
+        feedbackEl.textContent = '';
+        feedbackEl.className = 'feedback';
+    }
+
+    /* Popup für Ziffern */
+
+    function buildDigitButtons() {
+        digitGrid.innerHTML = '';
+        for (let d = 0; d <= 9; d++) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'digit-btn';
+            btn.textContent = String(d);
+            btn.addEventListener('click', () => {
+                if (activeInput) activeInput.value = String(d);
+                hidePopup();
+            });
+            digitGrid.appendChild(btn);
+        }
+    }
+
+    function showPopupForInput(inputEl) {
+        activeInput = inputEl;
+        popupOverlay.style.display = 'flex';
+    }
+
+    function hidePopup() {
+        popupOverlay.style.display = 'none';
+        activeInput = null;
+    }
+
+    popupCloseBtn.addEventListener('click', hidePopup);
+    popupOverlay.addEventListener('click', (e) => {
+        if (e.target === popupOverlay) hidePopup();
+    });
+
+    function attachInputClicks() {
+        const allInputs = [...quotInputs, ...gridInputs];
+        allInputs.forEach(inp => {
+            inp.addEventListener('click', () => {
+                inp.classList.remove('correct', 'incorrect');
+                showPopupForInput(inp);
+            });
+        });
+    }
+
+    /* Neue Aufgabe */
+
+    function generateProblem() {
+        // Einstelliger Divisor, dreistelliger Dividend, ohne Rest
+        divisor = randomInt(2, 9);
+
+        let qMin = 2;
+        let qMax = Math.floor(999 / divisor);
+        if (qMax < qMin) qMax = qMin;
+        quotient = randomInt(qMin, qMax);
+        dividend = divisor * quotient;
+
+        quotientDigits = digitsOf(quotient, NUM_QUOT_DIGITS);
+
+        // Aufgabenzeile neu aufbauen
+        divisionProblem.innerHTML = '';
+        const spanDividend = document.createElement('span');
+        spanDividend.id = 'dividend';
+        spanDividend.textContent = dividend;
+
+        const spanSymbol1 = document.createElement('span');
+        spanSymbol1.className = 'division-symbol';
+        spanSymbol1.textContent = '÷';
+
+        const spanDivisor = document.createElement('span');
+        spanDivisor.id = 'divisor';
+        spanDivisor.textContent = divisor;
+
+        const spanSymbol2 = document.createElement('span');
+        spanSymbol2.className = 'division-symbol';
+        spanSymbol2.textContent = '=';
+
+        divisionProblem.appendChild(spanDividend);
+        divisionProblem.appendChild(spanSymbol1);
+        divisionProblem.appendChild(spanDivisor);
+        divisionProblem.appendChild(spanSymbol2);
+
+        quotInputs = [];
+        for (let i = 0; i < NUM_QUOT_DIGITS; i++) {
+            const inp = document.createElement('input');
+            inp.type = 'text';
+            inp.maxLength = 1;
+            inp.className = 'quot-input';
+            inp.setAttribute('data-col', i);
+            divisionProblem.appendChild(inp);
+            quotInputs.push(inp);
+        }
+
+        resetInputs();
+        attachInputClicks();
+    }
+
+    /* Lösung prüfen – Quotient */
+
+    function checkSolution() {
+        let allCorrect = true;
+
+        quotInputs.forEach(inp => {
+            const col = parseInt(inp.getAttribute('data-col'), 10);
+            const expected = quotientDigits[col];
+            const value = inp.value === '' ? 0 : parseInt(inp.value, 10);
+            inp.classList.remove('correct', 'incorrect');
+            if (value === expected) {
+                inp.classList.add('correct');
+            } else {
+                inp.classList.add('incorrect');
+                allCorrect = false;
             }
         });
-    </script>
+
+        if (allCorrect) {
+            feedbackEl.textContent = 'Super, der Quotient stimmt! 🎉';
+            feedbackEl.className = 'feedback ok';
+        } else {
+            feedbackEl.textContent = 'Der Quotient stimmt noch nicht ganz. Kontrolliere deine Rechenschritte im Gitter.';
+            feedbackEl.className = 'feedback error';
+        }
+    }
+
+    /* Buttons */
+
+    newProblemBtn.addEventListener('click', generateProblem);
+    checkBtn.addEventListener('click', checkSolution);
+    resetBtn.addEventListener('click', resetInputs);
+
+    buildDigitButtons();
+    generateProblem();
+</script>
 </body>
 </html>
