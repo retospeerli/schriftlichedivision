@@ -192,23 +192,44 @@
   <div class="task-info" id="task-info"></div>
 
   <div class="layout">
-    <!-- Zeile 1: Divisor links, Quotient oben in Kästchen -->
-    <div class="label-cell" id="divisor-cell"></div>
+    <!-- Zeile 1: Quotient (alle Eingabefelder) -->
+    <div class="label-cell"></div>
     <div class="digit-cell"><input class="input-digit q" data-col="0" readonly></div>
     <div class="digit-cell"><input class="input-digit q" data-col="1" readonly></div>
     <div class="digit-cell"><input class="input-digit q" data-col="2" readonly></div>
     <div class="digit-cell"><input class="input-digit q" data-col="3" readonly></div>
 
-    <!-- Trennlinie über dem Dividend (wie Divisionsklammer) -->
+    <!-- Zeile 2: Divisionsstrich / -klammer -->
     <div></div>
     <div class="line-row"></div>
 
-    <!-- Zeile 3: Dividend rechtsbündig in den Spalten -->
-    <div></div>
+    <!-- Zeile 3: Divisor links, Dividend rechtsbündig -->
+    <div class="label-cell" id="divisor-cell"></div>
     <div class="digit-cell dividend-digit" id="d0"></div>
     <div class="digit-cell dividend-digit" id="d1"></div>
     <div class="digit-cell dividend-digit" id="d2"></div>
     <div class="digit-cell dividend-digit" id="d3"></div>
+
+    <!-- Zeile 4: 1. Rechenschritt (z.B. erstes Teilprodukt) -->
+    <div class="label-cell"></div>
+    <div class="digit-cell"><input class="input-digit w1" readonly></div>
+    <div class="digit-cell"><input class="input-digit w1" readonly></div>
+    <div class="digit-cell"><input class="input-digit w1" readonly></div>
+    <div class="digit-cell"><input class="input-digit w1" readonly></div>
+
+    <!-- Zeile 5: 2. Rechenschritt (Rest + Herunterholen) -->
+    <div class="label-cell"></div>
+    <div class="digit-cell"><input class="input-digit w2" readonly></div>
+    <div class="digit-cell"><input class="input-digit w2" readonly></div>
+    <div class="digit-cell"><input class="input-digit w2" readonly></div>
+    <div class="digit-cell"><input class="input-digit w2" readonly></div>
+
+    <!-- Zeile 6: 3. Rechenschritt (weiterer Zwischenschritt) -->
+    <div class="label-cell"></div>
+    <div class="digit-cell"><input class="input-digit w3" readonly></div>
+    <div class="digit-cell"><input class="input-digit w3" readonly></div>
+    <div class="digit-cell"><input class="input-digit w3" readonly></div>
+    <div class="digit-cell"><input class="input-digit w3" readonly></div>
   </div>
 
   <div class="buttons-row">
@@ -233,15 +254,15 @@
 <script>
   const NUM_COLS = 4; // bis 4 Ziffern (max. 1000)
 
-  let divisor = 0;
+  let divisor  = 0;
   let dividend = 0;
   let quotient = 0;
   let quotientDigits = [];
 
   let activeInput = null;
 
-  const taskInfo     = document.getElementById('task-info');
-  const divisorCell  = document.getElementById('divisor-cell');
+  const taskInfo    = document.getElementById('task-info');
+  const divisorCell = document.getElementById('divisor-cell');
   const dividendSpans = [
     document.getElementById('d0'),
     document.getElementById('d1'),
@@ -250,6 +271,12 @@
   ];
 
   const qInputs   = Array.from(document.querySelectorAll('.q'));
+  const workInputs = [
+    ...document.querySelectorAll('.w1'),
+    ...document.querySelectorAll('.w2'),
+    ...document.querySelectorAll('.w3')
+  ];
+
   const newBtn    = document.getElementById('new-btn');
   const checkBtn  = document.getElementById('check-btn');
   const feedback  = document.getElementById('feedback');
@@ -284,6 +311,10 @@
 
   function resetInputs() {
     qInputs.forEach(inp => {
+      inp.value = '';
+      inp.classList.remove('correct', 'incorrect');
+    });
+    workInputs.forEach(inp => {
       inp.value = '';
       inp.classList.remove('correct', 'incorrect');
     });
@@ -324,7 +355,8 @@
   });
 
   function setupInputClicks() {
-    qInputs.forEach(inp => {
+    const allInputs = [...qInputs, ...workInputs];
+    allInputs.forEach(inp => {
       inp.addEventListener('click', () => {
         inp.classList.remove('correct', 'incorrect');
         showPopupForInput(inp);
@@ -335,9 +367,8 @@
   /* Aufgaben-Generierung */
 
   function generateProblem() {
-    // Divisor 2–9, Quotient so wählen, dass Dividend ≤ 1000 und mind. zweistellig
+    // Divisor 2–9; Quotient so, dass Dividend ≤ 1000 und ganzzahlig
     divisor = randomInt(2, 9);
-
     let qMin = 2;
     let qMax = Math.floor(1000 / divisor);
     if (qMax < qMin) qMax = qMin;
@@ -350,7 +381,7 @@
     taskInfo.textContent = "Teile " + dividend + " durch " + divisor + ".";
     divisorCell.textContent = divisor + " )";
 
-    // Dividend rechtsbündig anzeigen (führende Nullen unterdrücken)
+    // Dividend rechtsbündig anzeigen (führende Nullen leer)
     const len = digitsCount(dividend);
     for (let i = 0; i < NUM_COLS; i++) {
       const isLeadingZero = (i < NUM_COLS - len) && dividendDigits[i] === 0;
@@ -360,28 +391,17 @@
     resetInputs();
   }
 
-  /* Lösung prüfen */
+  /* Lösung prüfen – hier wird nur der Quotient kontrolliert */
 
   function checkSolution() {
     let allCorrect = true;
 
-    // Eingaben zu einer Zahl zusammensetzen
-    const enteredDigits = qInputs.map(inp => {
-      return inp.value === '' ? 0 : parseInt(inp.value, 10);
-    });
-
-    // führende Nullen ignorieren
-    let expectedStr = quotient.toString();
-    let enteredStr  = enteredDigits.join('');
-    enteredStr = enteredStr.replace(/^0+/, '');
-    if (enteredStr === '') enteredStr = '0';
-
+    // Jede Ziffer des Quotienten vergleichen
     qInputs.forEach((inp, index) => {
-      const expectedDigit = quotientDigits[index];
-      const enteredDigit = inp.value === '' ? 0 : parseInt(inp.value, 10);
+      const expected = quotientDigits[index];
+      const value = inp.value === '' ? 0 : parseInt(inp.value, 10);
       inp.classList.remove('correct', 'incorrect');
-
-      if (expectedDigit === enteredDigit) {
+      if (value === expected) {
         inp.classList.add('correct');
       } else {
         inp.classList.add('incorrect');
@@ -389,23 +409,16 @@
       }
     });
 
-    if (enteredStr !== expectedStr) {
-      allCorrect = false;
-    }
-
     if (allCorrect) {
       feedback.textContent = 'Super, alles korrekt gelöst! 🎉';
       feedback.className = 'feedback ok';
     } else {
-      feedback.textContent = 'Noch nicht ganz richtig. Überprüfe deine Ziffern im Quotienten.';
+      feedback.textContent = 'Der Quotient stimmt noch nicht ganz. Kontrolliere deine Rechnung.';
       feedback.className = 'feedback error';
     }
   }
 
   /* Events */
-
-  const newBtn = document.getElementById('new-btn');
-  const checkBtn = document.getElementById('check-btn');
 
   newBtn.addEventListener('click', generateProblem);
   checkBtn.addEventListener('click', checkSolution);
