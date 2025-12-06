@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Schriftliche Division bis 1.000 – einstellig</title>
+  <title>Schriftliche Division – Gitter</title>
   <style>
     :root {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI";
@@ -32,72 +32,71 @@
     .subtitle {
       text-align: center;
       color: #4b5563;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.6rem;
       font-size: 0.9rem;
     }
 
-    .task-info {
+    .task-line {
       text-align: center;
-      font-size: 1.15rem;
+      font-size: 1.4rem;
       font-weight: 600;
       margin-bottom: 0.6rem;
     }
-
-    .layout {
-      display: grid;
-      grid-template-columns: auto repeat(4, 2.6rem);
-      gap: 0.12rem;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 0.8rem;
-    }
-
-    .label-cell {
-      text-align: right;
-      padding-right: 0.4rem;
-      font-size: 1.3rem;
-      color: #111827;
-      min-height: 2rem;
-    }
-
-    .digit-cell {
-      text-align: center;
-      font-size: 1.2rem;
-      min-height: 2rem;
-    }
-
-    .dividend-digit {
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
-
-    .input-digit {
-      width: 2.3rem;
-      height: 2.3rem;
+    .quot-input {
+      width: 2.0rem;
+      height: 2.0rem;
       border-radius: 8px;
       border: 2px solid #d1d5db;
       font-size: 1.1rem;
+      text-align: center;
       background: #f9fafb;
       cursor: pointer;
-      text-align: center;
+      margin-left: 0.1rem;
     }
-    .input-digit.correct {
+    .quot-input.correct {
       border-color: #16a34a;
       background: #dcfce7;
     }
-    .input-digit.incorrect {
+    .quot-input.incorrect {
       border-color: #b91c1c;
       background: #fee2e2;
     }
 
-    .line-row {
-      grid-column: 2 / span 4;
-      border-bottom: 2px solid #111827;
-      margin: 0.1rem 0 0.25rem 0;
+    /* Gitter wie kariertes Papier, 3 Spalten für H, Z, E */
+    .grid-wrapper {
+      display: inline-block;
+      margin: 0 auto 0.8rem auto;
+      border: 1px solid #e5e7eb;
+      padding: 0.15rem;
+      background: #f9fafb;
+    }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 2.3rem);
+      grid-auto-rows: 2.1rem;
+      gap: 0;
+    }
+    .grid-cell {
+      border: 1px solid #e5e7eb; /* kariertes Papier */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .work-input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.05rem;
+      cursor: pointer;
+    }
+    .work-input:focus {
+      outline: none;
     }
 
     .buttons-row {
-      margin-top: 0.4rem;
+      margin-top: 0.6rem;
       display: flex;
       gap: 0.6rem;
       justify-content: center;
@@ -165,9 +164,7 @@
       font-size: 1.05rem;
       cursor: pointer;
     }
-    .digit-btn:hover {
-      background: #e5e7eb;
-    }
+    .digit-btn:hover { background: #e5e7eb; }
     .popup-footer {
       text-align: center;
     }
@@ -179,9 +176,7 @@
       cursor: pointer;
       font-size: 0.85rem;
     }
-    .popup-close:hover {
-      background: #d1d5db;
-    }
+    .popup-close:hover { background: #d1d5db; }
   </style>
 </head>
 <body>
@@ -189,47 +184,40 @@
   <h1>Schriftliche Division</h1>
   <div class="subtitle">Bis 1.000 – einstelliger Divisor, ohne Rest</div>
 
-  <div class="task-info" id="task-info"></div>
+  <!-- Aufgabenzeile -->
+  <div class="task-line" id="task-line">
+    <!-- Wird per JS gefüllt, z.B.: 432 : 3 = [ ][ ][ ] -->
+  </div>
 
-  <div class="layout">
-    <!-- Zeile 1: Quotient (alle Eingabefelder) -->
-    <div class="label-cell"></div>
-    <div class="digit-cell"><input class="input-digit q" data-col="0" readonly></div>
-    <div class="digit-cell"><input class="input-digit q" data-col="1" readonly></div>
-    <div class="digit-cell"><input class="input-digit q" data-col="2" readonly></div>
-    <div class="digit-cell"><input class="input-digit q" data-col="3" readonly></div>
-
-    <!-- Zeile 2: Divisionsstrich / -klammer -->
-    <div></div>
-    <div class="line-row"></div>
-
-    <!-- Zeile 3: Divisor links, Dividend rechtsbündig -->
-    <div class="label-cell" id="divisor-cell"></div>
-    <div class="digit-cell dividend-digit" id="d0"></div>
-    <div class="digit-cell dividend-digit" id="d1"></div>
-    <div class="digit-cell dividend-digit" id="d2"></div>
-    <div class="digit-cell dividend-digit" id="d3"></div>
-
-    <!-- Zeile 4: 1. Rechenschritt (z.B. erstes Teilprodukt) -->
-    <div class="label-cell"></div>
-    <div class="digit-cell"><input class="input-digit w1" readonly></div>
-    <div class="digit-cell"><input class="input-digit w1" readonly></div>
-    <div class="digit-cell"><input class="input-digit w1" readonly></div>
-    <div class="digit-cell"><input class="input-digit w1" readonly></div>
-
-    <!-- Zeile 5: 2. Rechenschritt (Rest + Herunterholen) -->
-    <div class="label-cell"></div>
-    <div class="digit-cell"><input class="input-digit w2" readonly></div>
-    <div class="digit-cell"><input class="input-digit w2" readonly></div>
-    <div class="digit-cell"><input class="input-digit w2" readonly></div>
-    <div class="digit-cell"><input class="input-digit w2" readonly></div>
-
-    <!-- Zeile 6: 3. Rechenschritt (weiterer Zwischenschritt) -->
-    <div class="label-cell"></div>
-    <div class="digit-cell"><input class="input-digit w3" readonly></div>
-    <div class="digit-cell"><input class="input-digit w3" readonly></div>
-    <div class="digit-cell"><input class="input-digit w3" readonly></div>
-    <div class="digit-cell"><input class="input-digit w3" readonly></div>
+  <!-- Gitter für die Rechenschritte, 3 Spalten (H, Z, E) × 6 Zeilen -->
+  <div class="grid-wrapper">
+    <div class="calc-grid">
+      <!-- 6 Zeilen × 3 Spalten, alles Eingabefelder -->
+      <!-- Zeile 1 -->
+      <div class="grid-cell"><input class="work-input" data-row="0" data-col="0" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="0" data-col="1" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="0" data-col="2" readonly></div>
+      <!-- Zeile 2 -->
+      <div class="grid-cell"><input class="work-input" data-row="1" data-col="0" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="1" data-col="1" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="1" data-col="2" readonly></div>
+      <!-- Zeile 3 -->
+      <div class="grid-cell"><input class="work-input" data-row="2" data-col="0" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="2" data-col="1" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="2" data-col="2" readonly></div>
+      <!-- Zeile 4 -->
+      <div class="grid-cell"><input class="work-input" data-row="3" data-col="0" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="3" data-col="1" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="3" data-col="2" readonly></div>
+      <!-- Zeile 5 -->
+      <div class="grid-cell"><input class="work-input" data-row="4" data-col="0" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="4" data-col="1" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="4" data-col="2" readonly></div>
+      <!-- Zeile 6 -->
+      <div class="grid-cell"><input class="work-input" data-row="5" data-col="0" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="5" data-col="1" readonly></div>
+      <div class="grid-cell"><input class="work-input" data-row="5" data-col="2" readonly></div>
+    </div>
   </div>
 
   <div class="buttons-row">
@@ -252,8 +240,7 @@
 </div>
 
 <script>
-  const NUM_COLS = 4; // bis 4 Ziffern (max. 1000)
-
+  const NUM_QUOT_DIGITS = 3; // Quotient bis 3-stellig (z.B. 144)
   let divisor  = 0;
   let dividend = 0;
   let quotient = 0;
@@ -261,29 +248,18 @@
 
   let activeInput = null;
 
-  const taskInfo    = document.getElementById('task-info');
-  const divisorCell = document.getElementById('divisor-cell');
-  const dividendSpans = [
-    document.getElementById('d0'),
-    document.getElementById('d1'),
-    document.getElementById('d2'),
-    document.getElementById('d3')
-  ];
-
-  const qInputs   = Array.from(document.querySelectorAll('.q'));
-  const workInputs = [
-    ...document.querySelectorAll('.w1'),
-    ...document.querySelectorAll('.w2'),
-    ...document.querySelectorAll('.w3')
-  ];
-
-  const newBtn    = document.getElementById('new-btn');
-  const checkBtn  = document.getElementById('check-btn');
-  const feedback  = document.getElementById('feedback');
+  const taskLine   = document.getElementById('task-line');
+  const feedbackEl = document.getElementById('feedback');
 
   const popupOverlay  = document.getElementById('popup-overlay');
   const digitGrid     = document.getElementById('digit-grid');
   const popupCloseBtn = document.getElementById('popup-close-btn');
+
+  const newBtn   = document.getElementById('new-btn');
+  const checkBtn = document.getElementById('check-btn');
+
+  let quotInputs = [];  // wird beim Generieren neu aufgebaut
+  const workInputs = Array.from(document.querySelectorAll('.work-input'));
 
   /* Hilfsfunktionen */
 
@@ -291,35 +267,26 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  function digitsOf(num, cols) {
-    const arr = new Array(cols).fill(0);
+  function digitsOf(num, len) {
+    const arr = new Array(len).fill(0);
     let n = Math.floor(Math.abs(num));
-    for (let i = cols - 1; i >= 0; i--) {
+    for (let i = len - 1; i >= 0; i--) {
       arr[i] = n % 10;
       n = Math.floor(n / 10);
     }
     return arr;
   }
 
-  function digitsCount(num) {
-    if (num === 0) return 1;
-    let n = Math.floor(Math.abs(num));
-    let c = 0;
-    while (n > 0) { n = Math.floor(n / 10); c++; }
-    return c;
-  }
-
   function resetInputs() {
-    qInputs.forEach(inp => {
+    quotInputs.forEach(inp => {
       inp.value = '';
       inp.classList.remove('correct', 'incorrect');
     });
     workInputs.forEach(inp => {
       inp.value = '';
-      inp.classList.remove('correct', 'incorrect');
     });
-    feedback.textContent = '';
-    feedback.className = 'feedback';
+    feedbackEl.textContent = '';
+    feedbackEl.className = 'feedback';
   }
 
   /* Popup */
@@ -354,9 +321,9 @@
     if (e.target === popupOverlay) hidePopup();
   });
 
-  function setupInputClicks() {
-    const allInputs = [...qInputs, ...workInputs];
-    allInputs.forEach(inp => {
+  function attachInputClicks() {
+    const all = [...quotInputs, ...workInputs];
+    all.forEach(inp => {
       inp.addEventListener('click', () => {
         inp.classList.remove('correct', 'incorrect');
         showPopupForInput(inp);
@@ -367,38 +334,47 @@
   /* Aufgaben-Generierung */
 
   function generateProblem() {
-    // Divisor 2–9; Quotient so, dass Dividend ≤ 1000 und ganzzahlig
+    // Einstelliger Divisor, Dividend dreistellig, ohne Rest
     divisor = randomInt(2, 9);
+
+    // Quotient 2–3-stellig, so dass Dividend ≤ 999
     let qMin = 2;
-    let qMax = Math.floor(1000 / divisor);
+    let qMax = Math.floor(999 / divisor);
     if (qMax < qMin) qMax = qMin;
     quotient = randomInt(qMin, qMax);
     dividend = divisor * quotient;
 
-    quotientDigits = digitsOf(quotient, NUM_COLS);
-    const dividendDigits = digitsOf(dividend, NUM_COLS);
+    quotientDigits = digitsOf(quotient, NUM_QUOT_DIGITS);
 
-    taskInfo.textContent = "Teile " + dividend + " durch " + divisor + ".";
-    divisorCell.textContent = divisor + " )";
+    // Aufgabenzeile aufbauen: 432 : 3 = [ ][ ][ ]
+    taskLine.innerHTML = '';
+    const spanDiv = document.createElement('span');
+    spanDiv.textContent = dividend + ' : ' + divisor + ' = ';
+    taskLine.appendChild(spanDiv);
 
-    // Dividend rechtsbündig anzeigen (führende Nullen leer)
-    const len = digitsCount(dividend);
-    for (let i = 0; i < NUM_COLS; i++) {
-      const isLeadingZero = (i < NUM_COLS - len) && dividendDigits[i] === 0;
-      dividendSpans[i].textContent = isLeadingZero ? "" : dividendDigits[i];
+    quotInputs = [];
+    for (let i = 0; i < NUM_QUOT_DIGITS; i++) {
+      const inp = document.createElement('input');
+      inp.type = 'text';
+      inp.maxLength = 1;
+      inp.className = 'quot-input';
+      inp.setAttribute('data-col', i);
+      taskLine.appendChild(inp);
+      quotInputs.push(inp);
     }
 
     resetInputs();
+    attachInputClicks();
   }
 
-  /* Lösung prüfen – hier wird nur der Quotient kontrolliert */
+  /* Lösung prüfen – Quotient */
 
   function checkSolution() {
     let allCorrect = true;
 
-    // Jede Ziffer des Quotienten vergleichen
-    qInputs.forEach((inp, index) => {
-      const expected = quotientDigits[index];
+    quotInputs.forEach(inp => {
+      const col = parseInt(inp.getAttribute('data-col'), 10);
+      const expected = quotientDigits[col];
       const value = inp.value === '' ? 0 : parseInt(inp.value, 10);
       inp.classList.remove('correct', 'incorrect');
       if (value === expected) {
@@ -410,21 +386,18 @@
     });
 
     if (allCorrect) {
-      feedback.textContent = 'Super, alles korrekt gelöst! 🎉';
-      feedback.className = 'feedback ok';
+      feedbackEl.textContent = 'Super, alles korrekt gelöst! 🎉';
+      feedbackEl.className = 'feedback ok';
     } else {
-      feedback.textContent = 'Der Quotient stimmt noch nicht ganz. Kontrolliere deine Rechnung.';
-      feedback.className = 'feedback error';
+      feedbackEl.textContent = 'Der Quotient stimmt noch nicht ganz. Kontrolliere deine Rechnung im Gitter.';
+      feedbackEl.className = 'feedback error';
     }
   }
-
-  /* Events */
 
   newBtn.addEventListener('click', generateProblem);
   checkBtn.addEventListener('click', checkSolution);
 
   buildDigitButtons();
-  setupInputClicks();
   generateProblem();
 </script>
 </body>
